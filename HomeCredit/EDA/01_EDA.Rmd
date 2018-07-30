@@ -16,6 +16,11 @@ library(tidyverse)
 library(summarytools)
 ```
 
+```{r}
+data_dir <- "/Users/yn250006/OneDrive - Teradata/Training/Kaggle/HomeCredit/Data/all/"
+```
+
+
 ## ---- Description
 
 There are 8 files for the analysis.
@@ -28,15 +33,26 @@ There are 8 files for the analysis.
  - POS_CASH_balance.csv
  - previous_application.csv
 
-
-
-
 ## ---- 1. application
 ### ---- Data loading
 ```{r}
+file_01 <- "application_train.csv"
+file_02 <- "application_test.csv"
 
+dat_train <- read_csv(paste0(data_dir, file_01))
+dat_test  <- read_csv(paste0(data_dir, file_02))
 ```
 
+
+ひとまず 'summarytools' でサクッと
+```{r}
+dat_all <- dat_train %>% bind_rows(dat_test)
+```
+
+エディタにコピペする
+```{r, results = "asis"}
+# dfSummary(dat_all, plain.ascii = FALSE, style = "grid")
+```
 
 
 
