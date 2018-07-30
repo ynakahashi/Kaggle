@@ -1,0 +1,54 @@
+---
+title: "01_EDA"
+author: "ynakahashi"
+date: "2018/7/30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## ---- Libraries
+
+```{r}
+library(tidyverse)
+library(summarytools)
+```
+
+## ---- Description
+
+There are 8 files for the analysis.
+ - application_test.csv
+ - application_train.csv
+ - bureau_balance.csv
+ - bureau.csv
+ - credit_card_balance.csv
+ - installments_payments.csv
+ - POS_CASH_balance.csv
+ - previous_application.csv
+
+
+
+
+## ---- 1. application
+### ---- Data loading
+```{r}
+
+```
+
+
+
+
+## ---- 2. previous_application
+## ---- 3. bureau
+## ---- 4. bureau_balance
+## ---- 5. credit_card_balance
+## ---- 6. installments_payments
+## ---- 7. POS_CASH_balance
+
+
+
+
+
+
