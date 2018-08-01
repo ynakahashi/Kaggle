@@ -54,6 +54,30 @@ dat_all <- dat_train %>% bind_rows(dat_test)
 # dfSummary(dat_all, plain.ascii = FALSE, style = "grid")
 ```
 
+データを見てみる
+```{r}
+head(dat_all)
+```
+
+
+一つ一つ見ていく
+```{r}
+numeric_cols <- colnames(dat_all[, unlist(lapply(dat_all, is.numeric))])
+par_old <- par()
+par(mfrow = c(1, 2))
+```
+
+```{r}
+for (i in numeric_cols) {
+   par(mfrow = c(2, 1))
+   MASS::truehist(dat_all[[i]], main = i, prob = F, xlab = "")
+   MASS::truehist(log1p(dat_all[[i]]), prob = F, xlab = "")
+   readline(prompt="Press [enter] to continue")
+}
+```
+
+
+
 
 
 ## ---- 2. previous_application
