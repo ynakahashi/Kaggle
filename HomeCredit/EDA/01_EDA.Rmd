@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 library(summarytools)
+source("my_functions.R")
 ```
 
 ```{r}
@@ -26,12 +27,12 @@ data_dir <- "/Users/yn250006/OneDrive - Teradata/Training/Kaggle/HomeCredit/Data
 There are 8 files for the analysis.
  - application_test.csv
  - application_train.csv
- - bureau_balance.csv
+ - previous_application.csv
  - bureau.csv
+ - bureau_balance.csv
  - credit_card_balance.csv
  - installments_payments.csv
  - POS_CASH_balance.csv
- - previous_application.csv
 
 ## ---- 1. application
 ### ---- Data loading
@@ -41,46 +42,87 @@ file_02 <- "application_test.csv"
 
 dat_train <- read_csv(paste0(data_dir, file_01))
 dat_test  <- read_csv(paste0(data_dir, file_02))
+dat_all   <- dat_train %>% bind_rows(dat_test)
 ```
 
-
-ひとまず 'summarytools' でサクッと
-```{r}
-dat_all <- dat_train %>% bind_rows(dat_test)
-```
-
-エディタにコピペする
+### ---- Quick summary
+ひとまず 'summarytools' でサクッと集計してエディタにコピペする
 ```{r, results = "asis"}
 # dfSummary(dat_all, plain.ascii = FALSE, style = "grid")
 ```
 
 データを見てみる
 ```{r}
+dim(dat_all)
 head(dat_all)
+```
+
+ユニークな列の特定
+```{r}
+colnames(dat_all)[(map(dat_all, uniq_len) == nrow(dat_all))]
 ```
 
 
 一つ一つ見ていく
 ```{r}
-numeric_cols <- colnames(dat_all[, unlist(lapply(dat_all, is.numeric))])
-par_old <- par()
-par(mfrow = c(1, 2))
+# numeric_cols <- colnames(dat_all[, unlist(lapply(dat_all, is.numeric))])
+# par_old <- par()
+# par(mfrow = c(1, 2))
 ```
 
 ```{r}
-for (i in numeric_cols) {
-   par(mfrow = c(2, 1))
-   MASS::truehist(dat_all[[i]], main = i, prob = F, xlab = "")
-   MASS::truehist(log1p(dat_all[[i]]), prob = F, xlab = "")
-   readline(prompt="Press [enter] to continue")
-}
+# for (i in numeric_cols) {
+#    par(mfrow = c(2, 1))
+#    MASS::truehist(dat_all[[i]], main = i, prob = F, xlab = "")
+#    MASS::truehist(log1p(dat_all[[i]]), prob = F, xlab = "")
+#    readline(prompt="Press [enter] to continue")
+# }
+```
+
+
+## ---- 2. previous_application
+### ---- Data loading
+```{r}
+file_03 <- "previous_application.csv"
+dat_prev <- read_csv(paste0(data_dir, file_03))
+```
+
+### ---- Quick summary
+ひとまず 'summarytools' でサクッと集計してエディタにコピペする
+```{r, results = "asis"}
+# dfSummary(dat_prev, plain.ascii = FALSE, style = "grid")
+```
+
+データを見てみる
+```{r}
+dim(dat_prev)
+head(dat_prev)
+```
+
+ユニークな列の特定
+```{r}
+colnames(dat_prev)[(map(dat_prev, uniq_len) == nrow(dat_prev))]
+```
+
+
+```{r}
+tmp <- 
+   dat_prev %>% 
+   group_by(SK_ID_CURR) %>% 
+   summarise(CNT = n()) %>% 
+   arrange(desc(CNT))
+mean(tmp$CNT)
+ggplot(tmp, aes(x = CNT)) +
+      geom_bar()
 ```
 
 
 
 
 
-## ---- 2. previous_application
+
+
+
 ## ---- 3. bureau
 ## ---- 4. bureau_balance
 ## ---- 5. credit_card_balance
